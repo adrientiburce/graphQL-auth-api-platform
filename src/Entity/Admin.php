@@ -7,8 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ApiResource
  * @ORM\Entity(repositoryClass="App\Repository\AdminRepository")
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"={"security"="is_granted('ROLE_USER')"},
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get"={"security"="is_granted('ROLE_USER')"},
+ *         "put"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"},
+ *     }
+ * )
  */
 class Admin implements UserInterface
 {
